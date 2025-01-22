@@ -7,7 +7,7 @@ import tempfile
 class ImagePreviewer:
     def __init__(self, root):
         self.root = root
-        self.root.title("图片预览器 - 分割线随缩放保持位置")
+        self.root.title("Gepu Split Merge 图片分割与合并工具")
 
         # 合并计数器，用于生成 merged_1, merged_2, ...
         self.merge_count = 1
@@ -34,6 +34,9 @@ class ImagePreviewer:
         self.merge_button.pack(side=tk.LEFT, padx=5, pady=5)
 
         self.clear_dividers_button = tk.Button(toolbar_frame, text="清除分割线", command=self.clear_dividers)
+        self.clear_dividers_button.pack(side=tk.LEFT, padx=5, pady=5)
+
+        self.clear_dividers_button = tk.Button(toolbar_frame, text="重置序号", command=self.merge_count_set_1)
         self.clear_dividers_button.pack(side=tk.LEFT, padx=5, pady=5)
 
         # ========== 中间画布+滚动条区域 ==========
@@ -69,7 +72,6 @@ class ImagePreviewer:
         if not file_paths:
             return
 
-        self.merge_count=1
         # 假设文件名以数字开头，否则可能会出错（可根据需要改进）
         sorted_paths = sorted(file_paths, key=lambda x: int(os.path.basename(x).split('.')[0]))
 
@@ -173,6 +175,9 @@ class ImagePreviewer:
     def clear_dividers(self):
         self.dividers_original_positions.clear()
         self.display_images()  # 清除后重新绘图
+
+    def merge_count_set_1(self):
+        self.merge_count=1
 
     # ========== 坐标转换函数 ==========
     def scaled_pos_to_original(self, y_scaled):
@@ -324,7 +329,7 @@ class ImagePreviewer:
         """
         鼠标滚轮滚动
         """
-        self.canvas.yview_scroll(int(-1*(event.delta/120)), "units")
+        self.canvas.yview_scroll(int(-1*(event.delta/16)), "units")
 
 
 if __name__ == "__main__":
